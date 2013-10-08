@@ -1,6 +1,12 @@
 v6;
 
-my $file = open "/home/birmjin/projecteuler_perl6/p2.txt", :r;
+#if (@*ARGS) {
+#  for @*ARGS -> $str {
+#    say $str;
+#  }
+#}
+my $fileName = @*ARGS[0];
+my $file = open $fileName;
 my @rows = lines $file;
 my $maxPathSum = @rows[0];
 say $maxPathSum;
@@ -24,13 +30,6 @@ sub tread_triangle($lineNumber, $leftArrayOffset, $rightArrayOffset, @rows) {
     $leftSum += (@nextrow_numbers[$leftOffset] > @nextrow_numbers[$leftOffset + 1] ?? @nextrow_numbers[$leftOffset] !!@nextrow_numbers[$leftOffset + 1]);
     $rightSum += (@nextrow_numbers[$lineNumber + 1 - $rightOffset - 1] > @nextrow_numbers[$lineNumber + 1 - $rightOffset] ?? @nextrow_numbers[$lineNumber + 1 - $rightOffset - 1] !! @nextrow_numbers[$lineNumber + 1 - $rightOffset]);
   }
-
-#  while (($lineNumber < @rows.elems) && (($lineNumber - $lineNumber) < 3) ) {
-#    @numbers = split(/' '+/, @rows[$lineNumber]);
-#    $leftSum += @numbers[$leftOffset] / ($lineNumber - $lineNumber + 1);
-#    $rightSum += @numbers[$lineNumber - $rightOffset] / ($lineNumber - $lineNumber + 1);
-#    $lineNumber++;
-#  }
 
   if (($leftSum <=> $rightSum) >= 0) {
     $maxPathSum += @numbers[$leftOffset];
