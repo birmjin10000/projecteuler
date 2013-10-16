@@ -1,8 +1,11 @@
 // Project Euler Problem No. 8
+/* jshint globalstrict: true */
+"use strict";
+
 var fs = require('fs')
 var filename = process.argv[2];
 
-var file = fs.readFile(filename, function(err, data){
+fs.readFile(filename, function(err, data) {
   if (err) throw err;
   var array = [];
   var digits = data.toString().replace(/\r?\n|\r/g,"");
@@ -17,10 +20,10 @@ var file = fs.readFile(filename, function(err, data){
   var product_of_digit_sequence = 1;
   var COUNT_OF_DIGITS = 5;
  
-  for (var i = 0; i < length - COUNT_OF_DIGITS; i++) {
+  for (var index = 0; index < length - COUNT_OF_DIGITS; index++) {
     product_of_digit_sequence = 1;
-    for (var j = i; j < i + COUNT_OF_DIGITS; j++) {
-      product_of_digit_sequence *= array[j]; 
+    for (var offset = 0; offset < COUNT_OF_DIGITS; offset++) {
+      product_of_digit_sequence *= array[index + offset]; 
     }
     
     if (product_of_digit_sequence > max_product_of_digit_sequence) {
