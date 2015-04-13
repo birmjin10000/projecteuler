@@ -5,5 +5,6 @@ concatenateMultiple n =
 isPandigital n =
    (length $ intersect "123456789" (concatenateMultiple n)) == 9
 
-maxConcatMultiple = 
-    [9212..9871]!!(maximum $ findIndices (==True) $ map isPandigital [9212..9871])
+concatMultiples = findIndices (==True) $ map isPandigital [9213..9876]
+
+main = print $ concatenateMultiple ([9213..9876]!!(maximum concatMultiples)) 
