@@ -1,12 +1,32 @@
 import Data.List hiding (union)
-import Data.Number.CReal
 
-recurringCycle n =
-    showCReal 50 (1000 / n)
+fstRemainder n = 10^(length (show n)) `mod` n
+fstQuotient n = 10^(length (show n)) `div` n
+fstQuotients n = (fstQuotient n):(replicate (length (show n) - 1) 0)
+recurringCycle n = 
+    if (fstRemainder n == 0) then []
+    else recurringCycle' (fstQuotients n) (fstRemainder n) (fstRemainder n)  n
+recurringCycle' acc fstRemainder currentRemainder n =
+    if (fstRemainder == nextRemainder) then reverse acc
+    else recurringCycle' ((nextQuotient:leadingZero) ++ acc) fstRemainder nextRemainder n 
+    where nextRemainder = (fst $ multiply10Until currentRemainder n) `mod` n
+          nextQuotient = (fst $ multiply10Until currentRemainder n) `div` n 
+          leadingZero = replicate (snd $ multiply10Until currentRemainder n) 0
+
+multiply10Until remainder n =
+    multiply10Until' remainder (-1) n
+multiply10Until' remainder multiplyCount n =
+    if (remainder > n) then (remainder, multiplyCount) 
+    else multiply10Until' (remainder*10) (multiplyCount+1) n
 
 primesLT1000 = takeWhile (<1000) primes
+recurringCyclesList = zip [0..] (map recurringCycle primesLT1000)
 
--- copied from http://ideone.com/rHJ9ub
+main =
+    let result = foldr1 (\e acc -> if (length (snd e) > length (snd acc)) then e else acc) $ recurringCyclesList 
+    in print $ primesLT1000!!(fst result) 
+
+-- below code is copied from http://ideone.com/rHJ9ub
 primes :: [Int]
 primes = [2,3,5,7] ++ _Y ((11:) . tail . minus (scanl (+) 11 wh11) 
                . foldi (\(x:xs) r -> x : union xs r)
